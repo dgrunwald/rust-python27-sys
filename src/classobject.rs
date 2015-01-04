@@ -1,0 +1,81 @@
+use libc::c_int;
+use pyport::Py_ssize_t;
+use object::*;
+
+#[repr(C)]
+#[derive(Copy)]
+pub struct PyClassObject {
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_next: *mut PyObject,
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_prev: *mut PyObject,
+    pub ob_refcnt: Py_ssize_t,
+    pub ob_type: *mut PyTypeObject,
+    pub cl_bases: *mut PyObject,
+    pub cl_dict: *mut PyObject,
+    pub cl_name: *mut PyObject,
+    pub cl_getattr: *mut PyObject,
+    pub cl_setattr: *mut PyObject,
+    pub cl_delattr: *mut PyObject,
+    pub cl_weakreflist: *mut PyObject,
+}
+
+#[repr(C)]
+#[derive(Copy)]
+pub struct PyInstanceObject {
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_next: *mut PyObject,
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_prev: *mut PyObject,
+    pub ob_refcnt: Py_ssize_t,
+    pub ob_type: *mut PyTypeObject,
+    pub in_class: *mut PyClassObject,
+    pub in_dict: *mut PyObject,
+    pub in_weakreflist: *mut PyObject,
+}
+
+#[link(name = "python2.7")]
+extern "C" {
+    pub static mut PyClass_Type: PyTypeObject;
+    pub static mut PyInstance_Type: PyTypeObject;
+    pub static mut PyMethod_Type: PyTypeObject;
+}
+
+#[inline(always)]
+pub unsafe fn PyClass_Check(op : *mut PyObject) -> bool {
+    let u : *mut PyTypeObject = &mut PyClass_Type;
+    Py_TYPE(op) == u
+}
+
+#[inline(always)]
+pub unsafe fn PyInstance_Check(op : *mut PyObject) -> bool {
+    let u : *mut PyTypeObject = &mut PyInstance_Type;
+    Py_TYPE(op) == u
+}
+
+#[inline(always)]
+pub unsafe fn PyMethod_Check(op : *mut PyObject) -> bool {
+    let u : *mut PyTypeObject = &mut PyMethod_Type;
+    Py_TYPE(op) == u
+}
+
+#[link(name = "python2.7")]
+extern "C" {
+    pub fn PyClass_New(arg1: *mut PyObject, arg2: *mut PyObject,
+                       arg3: *mut PyObject) -> *mut PyObject;
+    pub fn PyInstance_New(arg1: *mut PyObject, arg2: *mut PyObject,
+                          arg3: *mut PyObject) -> *mut PyObject;
+    pub fn PyInstance_NewRaw(arg1: *mut PyObject, arg2: *mut PyObject)
+     -> *mut PyObject;
+    pub fn PyMethod_New(arg1: *mut PyObject, arg2: *mut PyObject,
+                        arg3: *mut PyObject) -> *mut PyObject;
+    pub fn PyMethod_Function(arg1: *mut PyObject) -> *mut PyObject;
+    pub fn PyMethod_Self(arg1: *mut PyObject) -> *mut PyObject;
+    pub fn PyMethod_Class(arg1: *mut PyObject) -> *mut PyObject;
+    fn _PyInstance_Lookup(pinst: *mut PyObject, name: *mut PyObject)
+     -> *mut PyObject;
+    pub fn PyClass_IsSubclass(arg1: *mut PyObject, arg2: *mut PyObject)
+     -> c_int;
+    pub fn PyMethod_ClearFreeList() -> c_int;
+}
+
