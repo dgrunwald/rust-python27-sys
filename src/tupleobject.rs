@@ -12,7 +12,7 @@ pub struct PyTupleObject {
     pub ob_refcnt: Py_ssize_t,
     pub ob_type: *mut PyTypeObject,
     pub ob_size: Py_ssize_t,
-    pub ob_item: [*mut PyObject; 1u],
+    pub ob_item: [*mut PyObject; 1],
 }
 
 #[link(name = "python2.7")]
@@ -35,7 +35,7 @@ pub unsafe fn PyTuple_CheckExact(op : *mut PyObject) -> c_int {
 // Macro, trading safety for speed
 #[inline(always)]
 pub unsafe fn PyTuple_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
-   *(*(op as *mut PyTupleObject)).ob_item.as_ptr().offset(i as int)
+   *(*(op as *mut PyTupleObject)).ob_item.as_ptr().offset(i as isize)
 }
 
 #[inline(always)]
@@ -46,7 +46,7 @@ pub unsafe fn PyTuple_GET_SIZE(op: *mut PyObject) -> Py_ssize_t {
 /// Macro, *only* to be used to fill in brand new tuples
 #[inline(always)]
 pub unsafe fn PyTuple_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) {
-   *(*(op as *mut PyTupleObject)).ob_item.as_mut_ptr().offset(i as int) = v;
+   *(*(op as *mut PyTupleObject)).ob_item.as_mut_ptr().offset(i as isize) = v;
 }
 
 #[link(name = "python2.7")]

@@ -36,7 +36,7 @@ pub unsafe fn PyList_CheckExact(op : *mut PyObject) -> c_int {
 // Macro, trading safety for speed
 #[inline(always)]
 pub unsafe fn PyList_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
-   *(*(op as *mut PyListObject)).ob_item.offset(i as int)
+   *(*(op as *mut PyListObject)).ob_item.offset(i as isize)
 }
 
 #[inline(always)]
@@ -47,7 +47,7 @@ pub unsafe fn PyList_GET_SIZE(op: *mut PyObject) -> Py_ssize_t {
 /// Macro, *only* to be used to fill in brand new lists
 #[inline(always)]
 pub unsafe fn PyList_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) {
-   *(*(op as *mut PyListObject)).ob_item.offset(i as int) = v;
+   *(*(op as *mut PyListObject)).ob_item.offset(i as isize) = v;
 }
 
 #[link(name = "python2.7")]

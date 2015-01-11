@@ -14,7 +14,7 @@ struct PyStringObject {
     pub ob_size: Py_ssize_t,
     pub ob_shash: c_long,
     pub ob_sstate: c_int,
-    pub ob_sval: [c_char; 1u],
+    pub ob_sval: [c_char; 1],
 }
 
 #[link(name = "python2.7")]

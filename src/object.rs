@@ -148,7 +148,7 @@ pub struct Py_buffer {
     pub shape: *mut Py_ssize_t,
     pub strides: *mut Py_ssize_t,
     pub suboffsets: *mut Py_ssize_t,
-    pub smalltable: [Py_ssize_t; 2u],
+    pub smalltable: [Py_ssize_t; 2],
     pub internal: *mut c_void,
 }
 
@@ -161,33 +161,33 @@ pub type releasebufferproc =
                               (arg1: *mut PyObject, arg2: *mut Py_buffer);
 
 // flags:
-pub const PyBUF_SIMPLE : int = 0;
-pub const PyBUF_WRITABLE : int = 0x0001;
-pub const PyBUF_FORMAT : int = 0x0004;
-pub const PyBUF_ND : int = 0x0008;
-pub const PyBUF_STRIDES : int = (0x0010 | PyBUF_ND);
-pub const PyBUF_C_CONTIGUOUS : int = (0x0020 | PyBUF_STRIDES);
-pub const PyBUF_F_CONTIGUOUS : int = (0x0040 | PyBUF_STRIDES);
-pub const PyBUF_ANY_CONTIGUOUS : int = (0x0080 | PyBUF_STRIDES);
-pub const PyBUF_INDIRECT : int = (0x0100 | PyBUF_STRIDES);
+pub const PyBUF_SIMPLE : c_int = 0;
+pub const PyBUF_WRITABLE : c_int = 0x0001;
+pub const PyBUF_FORMAT : c_int = 0x0004;
+pub const PyBUF_ND : c_int = 0x0008;
+pub const PyBUF_STRIDES : c_int = (0x0010 | PyBUF_ND);
+pub const PyBUF_C_CONTIGUOUS : c_int = (0x0020 | PyBUF_STRIDES);
+pub const PyBUF_F_CONTIGUOUS : c_int = (0x0040 | PyBUF_STRIDES);
+pub const PyBUF_ANY_CONTIGUOUS : c_int = (0x0080 | PyBUF_STRIDES);
+pub const PyBUF_INDIRECT : c_int = (0x0100 | PyBUF_STRIDES);
 
-pub const PyBUF_CONTIG : int = (PyBUF_ND | PyBUF_WRITABLE);
-pub const PyBUF_CONTIG_RO : int = (PyBUF_ND);
+pub const PyBUF_CONTIG : c_int = (PyBUF_ND | PyBUF_WRITABLE);
+pub const PyBUF_CONTIG_RO : c_int = (PyBUF_ND);
 
-pub const PyBUF_STRIDED : int = (PyBUF_STRIDES | PyBUF_WRITABLE);
-pub const PyBUF_STRIDED_RO : int = (PyBUF_STRIDES);
+pub const PyBUF_STRIDED : c_int = (PyBUF_STRIDES | PyBUF_WRITABLE);
+pub const PyBUF_STRIDED_RO : c_int = (PyBUF_STRIDES);
 
-pub const PyBUF_RECORDS : int = (PyBUF_STRIDES | PyBUF_WRITABLE | PyBUF_FORMAT);
-pub const PyBUF_RECORDS_RO : int = (PyBUF_STRIDES | PyBUF_FORMAT);
+pub const PyBUF_RECORDS : c_int = (PyBUF_STRIDES | PyBUF_WRITABLE | PyBUF_FORMAT);
+pub const PyBUF_RECORDS_RO : c_int = (PyBUF_STRIDES | PyBUF_FORMAT);
 
-pub const PyBUF_FULL : int = (PyBUF_INDIRECT | PyBUF_WRITABLE | PyBUF_FORMAT);
-pub const PyBUF_FULL_RO : int = (PyBUF_INDIRECT | PyBUF_FORMAT);
+pub const PyBUF_FULL : c_int = (PyBUF_INDIRECT | PyBUF_WRITABLE | PyBUF_FORMAT);
+pub const PyBUF_FULL_RO : c_int = (PyBUF_INDIRECT | PyBUF_FORMAT);
 
 
 // buffertype:
-pub const PyBUF_READ : int = 0x100;
-pub const PyBUF_WRITE : int = 0x200;
-pub const PyBUF_SHADOW : int = 0x400;
+pub const PyBUF_READ : c_int = 0x100;
+pub const PyBUF_WRITE : c_int = 0x200;
+pub const PyBUF_SHADOW : c_int = 0x400;
 
 
 
@@ -226,7 +226,7 @@ pub struct PyNumberMethods {
     pub nb_xor: Option<binaryfunc>,
     pub nb_or: Option<binaryfunc>,
     pub nb_coerce: Option<coercion>,
-    pub nb_int: Option<unaryfunc>,
+    pub nb_c_int: Option<unaryfunc>,
     pub nb_long: Option<unaryfunc>,
     pub nb_float: Option<unaryfunc>,
     pub nb_oct: Option<unaryfunc>,
@@ -538,7 +538,7 @@ extern "C" {
 }
 
 // Flag bits for printing:
-pub const Py_PRINT_RAW : int = 1;       // No string quotes etc.
+pub const Py_PRINT_RAW : c_int = 1;       // No string quotes etc.
 
 
 /// PyBufferProcs contains bf_getcharbuffer
@@ -710,7 +710,7 @@ extern "C" {
 pub const PyTrash_UNWIND_LEVEL : c_int = 50;
 
 #[inline(always)]
-pub unsafe fn Py_TRASHCAN<F : FnOnce<(), ()>>(op: *mut PyObject, body: F) {
+pub unsafe fn Py_TRASHCAN<F : FnOnce() -> ()>(op: *mut PyObject, body: F) {
     let tstate = ::pystate::PyThreadState_GET();
     if tstate.is_null() || (*tstate).trash_delete_nesting < PyTrash_UNWIND_LEVEL {
         if !tstate.is_null() {
