@@ -1,6 +1,6 @@
 [package]
 name = "python27-sys"
-description = "Declarations for Python 2.7"
+description = "FFI Declarations for Python 2.7"
 readme = "README.md"
 keywords = [
     "python",
@@ -9,8 +9,8 @@ keywords = [
 ]
 homepage = "https://github.com/dgrunwald/rust-python27-sys"
 repository = "https://github.com/dgrunwald/rust-python27-sys.git"
-license = "Python"
-version = "0.0.1"
+license = "Python-2.0"
+version = "0.0.2"
 authors = ["Daniel Grunwald <daniel@danielgrunwald.de>"]
 links = "python2.7"
 build = "build.rs"
