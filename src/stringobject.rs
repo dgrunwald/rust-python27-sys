@@ -25,14 +25,14 @@ extern "C" {
 
 
 #[inline(always)]
-pub unsafe fn PyString_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyString_Check(op : *mut PyObject) -> c_int {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_STRING_SUBCLASS)
 }
 
 #[inline(always)]
-pub unsafe fn PyString_CheckExact(op : *mut PyObject) -> bool {
+pub unsafe fn PyString_CheckExact(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyString_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 

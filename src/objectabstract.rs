@@ -223,35 +223,35 @@ extern "C" {
 
 
 #[inline]
-pub unsafe fn PyObject_CheckBuffer(obj: *mut PyObject) -> bool {
+pub unsafe fn PyObject_CheckBuffer(obj: *mut PyObject) -> c_int {
     let t = (*obj).ob_type;
     let b = (*t).tp_as_buffer;
-    !b.is_null() &&
-     (PyType_HasFeature(t, Py_TPFLAGS_HAVE_NEWBUFFER)) &&
-     ((*b).bf_getbuffer.is_some())
+    (!b.is_null() &&
+     (PyType_HasFeature(t, Py_TPFLAGS_HAVE_NEWBUFFER) != 0) &&
+     ((*b).bf_getbuffer.is_some())) as c_int
 }
 
 
 #[inline]
-pub unsafe fn PyIter_Check(obj: *mut PyObject) -> bool {
+pub unsafe fn PyIter_Check(obj: *mut PyObject) -> c_int {
     let t = (*obj).ob_type;
-    PyType_HasFeature(t, Py_TPFLAGS_HAVE_ITER) &&
+    (PyType_HasFeature(t, Py_TPFLAGS_HAVE_ITER) != 0 &&
       match (*t).tp_iternext {
         None => false,
         Some(f) => f as *const c_void != _PyObject_NextNotImplemented as *const c_void,
-      }
+      }) as c_int
 }
 
 #[inline]
-pub unsafe fn PyIndex_Check(obj: *mut PyObject) -> bool {
+pub unsafe fn PyIndex_Check(obj: *mut PyObject) -> c_int {
     let t = (*obj).ob_type;
     let n = (*t).tp_as_number;
-    !n.is_null() && PyType_HasFeature(t, Py_TPFLAGS_HAVE_INDEX) && (*n).nb_index.is_some()
+    (!n.is_null() && PyType_HasFeature(t, Py_TPFLAGS_HAVE_INDEX) != 0 && (*n).nb_index.is_some()) as c_int
 }
 
 #[inline]
 pub unsafe fn PySequence_Fast_GET_SIZE(o : *mut PyObject) -> Py_ssize_t {
-    if ::listobject::PyList_Check(o) {
+    if ::listobject::PyList_Check(o) != 0 {
         ::listobject::PyList_GET_SIZE(o)
     } else {
         ::tupleobject::PyTuple_GET_SIZE(o)
@@ -260,7 +260,7 @@ pub unsafe fn PySequence_Fast_GET_SIZE(o : *mut PyObject) -> Py_ssize_t {
 
 #[inline]
 pub unsafe fn PySequence_Fast_GET_ITEM(o : *mut PyObject, i : Py_ssize_t) -> *mut PyObject {
-    if ::listobject::PyList_Check(o) {
+    if ::listobject::PyList_Check(o) != 0 {
         ::listobject::PyList_GET_ITEM(o, i)
     } else {
         ::tupleobject::PyTuple_GET_ITEM(o, i)
@@ -269,7 +269,7 @@ pub unsafe fn PySequence_Fast_GET_ITEM(o : *mut PyObject, i : Py_ssize_t) -> *mu
 
 #[inline]
 pub unsafe fn PySequence_Fast_ITEMS(o : *mut PyObject) -> *mut *mut PyObject {
-    if ::listobject::PyList_Check(o) {
+    if ::listobject::PyList_Check(o) != 0 {
         (*(o as *mut ::listobject::PyListObject)).ob_item
     } else {
         (*(o as *mut ::tupleobject::PyTupleObject)).ob_item.as_mut_ptr()

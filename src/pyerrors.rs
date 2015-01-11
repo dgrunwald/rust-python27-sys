@@ -26,20 +26,20 @@ extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyExceptionClass_Check(x: *mut PyObject) -> bool {
-    (PyClass_Check((x)) || (PyType_Check((x)) &&
-      PyType_FastSubclass(x as *mut PyTypeObject, Py_TPFLAGS_BASE_EXC_SUBCLASS)))
+pub unsafe fn PyExceptionClass_Check(x: *mut PyObject) -> c_int {
+    (PyClass_Check((x)) != 0 || (PyType_Check((x)) != 0 &&
+      PyType_FastSubclass(x as *mut PyTypeObject, Py_TPFLAGS_BASE_EXC_SUBCLASS) != 0)) as c_int
 }
 
 #[inline]
-pub unsafe fn PyExceptionInstance_Check(x: *mut PyObject) -> bool {
-    (PyInstance_Check((x)) ||
-     PyType_FastSubclass((*x).ob_type, Py_TPFLAGS_BASE_EXC_SUBCLASS))
+pub unsafe fn PyExceptionInstance_Check(x: *mut PyObject) -> c_int {
+    (PyInstance_Check((x)) != 0 ||
+     PyType_FastSubclass((*x).ob_type, Py_TPFLAGS_BASE_EXC_SUBCLASS) != 0) as c_int
 }
 
 #[inline]
 pub unsafe fn PyExceptionClass_Name(x: *mut PyObject) -> *const c_char {
-    if PyClass_Check(x) {
+    if PyClass_Check(x) != 0 {
         PyString_AS_STRING((*(x as *mut PyClassObject)).cl_name)
     } else {
         (*(x as *mut PyTypeObject)).tp_name
@@ -48,7 +48,7 @@ pub unsafe fn PyExceptionClass_Name(x: *mut PyObject) -> *const c_char {
 
 #[inline]
 pub unsafe fn PyExceptionInstance_Class(x: *mut PyObject) -> *mut PyObject {
-    if PyInstance_Check(x) {
+    if PyInstance_Check(x) != 0 {
         (*(x as *mut PyInstanceObject)).in_class as *mut PyObject
     } else {
         (*x).ob_type as *mut PyObject

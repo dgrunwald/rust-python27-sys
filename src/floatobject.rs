@@ -20,14 +20,14 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyFloat_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyFloat_Check(op : *mut PyObject) -> c_int {
     PyObject_TypeCheck(op, &mut PyFloat_Type)
 }
 
 #[inline(always)]
-pub unsafe fn PyFloat_CheckExact(op : *mut PyObject) -> bool {
+pub unsafe fn PyFloat_CheckExact(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyFloat_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 pub const PyFloat_STR_PRECISION : c_int = 12;

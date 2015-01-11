@@ -1,4 +1,4 @@
-use libc::c_long;
+use libc::{c_int, c_long};
 use object::*;
 use intobject::PyIntObject;
 
@@ -14,9 +14,9 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyBool_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyBool_Check(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyBool_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 pub unsafe fn Py_False() -> *mut PyObject {

@@ -10,36 +10,36 @@ extern "C" {
     pub static mut PyFrozenSet_Type: PyTypeObject;
 }
 
-#[inline(always)]
-pub unsafe fn PyFrozenSet_CheckExact(ob : *mut PyObject) -> bool {
+#[inline]
+pub unsafe fn PyFrozenSet_CheckExact(ob : *mut PyObject) -> c_int {
     let f : *mut PyTypeObject = &mut PyFrozenSet_Type;
-    Py_TYPE(ob) == f
+    (Py_TYPE(ob) == f) as c_int
 }
 
-#[inline(always)]
-pub unsafe fn PyAnySet_CheckExact(ob : *mut PyObject) -> bool {
+#[inline]
+pub unsafe fn PyAnySet_CheckExact(ob : *mut PyObject) -> c_int {
     let s : *mut PyTypeObject = &mut PySet_Type;
     let f : *mut PyTypeObject = &mut PyFrozenSet_Type;
-    Py_TYPE(ob) == s || Py_TYPE(ob) == f
+    (Py_TYPE(ob) == s || Py_TYPE(ob) == f) as c_int
 }
 
-#[inline(always)]
-pub unsafe fn PyAnySet_Check(ob : *mut PyObject) -> bool {
-    PyAnySet_CheckExact(ob) ||
+#[inline]
+pub unsafe fn PyAnySet_Check(ob : *mut PyObject) -> c_int {
+    (PyAnySet_CheckExact(ob) != 0 ||
       PyType_IsSubtype(Py_TYPE(ob), &mut PySet_Type) != 0 ||
-      PyType_IsSubtype(Py_TYPE(ob), &mut PyFrozenSet_Type) != 0
+      PyType_IsSubtype(Py_TYPE(ob), &mut PyFrozenSet_Type) != 0) as c_int
 }
 
-#[inline(always)]
-pub unsafe fn PySet_Check(ob : *mut PyObject) -> bool {
+#[inline]
+pub unsafe fn PySet_Check(ob : *mut PyObject) -> c_int {
     let s : *mut PyTypeObject = &mut PySet_Type;
-    Py_TYPE(ob) == s || PyType_IsSubtype(Py_TYPE(ob), s) != 0
+    (Py_TYPE(ob) == s || PyType_IsSubtype(Py_TYPE(ob), s) != 0) as c_int
 }
 
-#[inline(always)]
-pub unsafe fn PyFrozenSet_Check(ob : *mut PyObject) -> bool {
+#[inline]
+pub unsafe fn PyFrozenSet_Check(ob : *mut PyObject) -> c_int {
     let f : *mut PyTypeObject = &mut PyFrozenSet_Type;
-    Py_TYPE(ob) == f || PyType_IsSubtype(Py_TYPE(ob), f) != 0
+    (Py_TYPE(ob) == f || PyType_IsSubtype(Py_TYPE(ob), f) != 0) as c_int
 }
 
 #[link(name = "python2.7")]

@@ -1,4 +1,4 @@
-use libc::c_char;
+use libc::{c_char, c_int};
 use object::*;
 
 #[link(name = "python2.7")]
@@ -13,13 +13,13 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyModule_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyModule_Check(op : *mut PyObject) -> c_int {
     PyObject_TypeCheck(op, &mut PyModule_Type)
 }
 
 #[inline(always)]
-pub unsafe fn PyModule_CheckExact(op : *mut PyObject) -> bool {
+pub unsafe fn PyModule_CheckExact(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyModule_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 

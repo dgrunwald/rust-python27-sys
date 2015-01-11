@@ -1,4 +1,4 @@
-use libc::{c_void, c_char, size_t};
+use libc::{c_void, c_char, c_int, size_t};
 use pyport::Py_ssize_t;
 use object::*;
 
@@ -32,25 +32,25 @@ extern "C" {
 
 /// Test if a type has a GC head
 #[inline(always)]
-pub unsafe fn PyType_IS_GC(t : *mut PyTypeObject) -> bool {
+pub unsafe fn PyType_IS_GC(t : *mut PyTypeObject) -> c_int {
     PyType_HasFeature((t), Py_TPFLAGS_HAVE_GC)
 }
 
 /// Test if an object has a GC head
 #[inline(always)]
-pub unsafe fn PyObject_IS_GC(o : *mut PyObject) -> bool {
-    PyType_IS_GC(Py_TYPE(o)) &&
+pub unsafe fn PyObject_IS_GC(o : *mut PyObject) -> c_int {
+    (PyType_IS_GC(Py_TYPE(o)) != 0 &&
     match (*Py_TYPE(o)).tp_is_gc {
         Some(tp_is_gc) => tp_is_gc(o) != 0,
         None => true
-    }
+    }) as c_int
 }
 
 /* Test if a type supports weak references */
 #[inline(always)]
-pub unsafe fn PyType_SUPPORTS_WEAKREFS(t : *mut PyTypeObject) -> bool {
-    (PyType_HasFeature((t), Py_TPFLAGS_HAVE_WEAKREFS)
-     && ((*t).tp_weaklistoffset > 0))
+pub unsafe fn PyType_SUPPORTS_WEAKREFS(t : *mut PyTypeObject) -> c_int {
+    (PyType_HasFeature((t), Py_TPFLAGS_HAVE_WEAKREFS) != 0
+     && ((*t).tp_weaklistoffset > 0)) as c_int
 }
 
 #[inline(always)]

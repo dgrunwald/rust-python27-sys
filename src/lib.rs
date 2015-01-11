@@ -1,5 +1,4 @@
-#![feature(globs)]
-#![allow(raw_pointer_deriving, non_camel_case_types, non_upper_case_globals, non_snake_case)]
+#![allow(raw_pointer_derive, non_camel_case_types, non_upper_case_globals, non_snake_case)]
 
 extern crate libc;
 
@@ -29,6 +28,7 @@ pub use moduleobject::*;
 pub use funcobject::*;
 pub use classobject::*;
 pub use descrobject::*;
+pub use warnings::*;
 pub use pyarena::*;
 pub use modsupport::*;
 pub use pythonrun::*;
@@ -75,7 +75,7 @@ mod classobject;// TODO: incomplete
 // mod iterobject; // TODO: incomplete
 // mod genobject; // TODO: incomplete
 mod descrobject; // TODO: incomplete
-// mod warnings; // TODO: incomplete
+mod warnings;
 // mod weakrefobject; // TODO: incomplete
 
 // mod codecs; // TODO: incomplete
@@ -110,10 +110,10 @@ pub mod structmember;
 
 #[cfg(not(feature="Py_USING_UNICODE"))]
 #[inline(always)]
-pub fn PyUnicode_Check(op : *mut PyObject) -> bool { false }
+pub fn PyUnicode_Check(op : *mut PyObject) -> c_int { 0 }
 
 #[cfg(not(feature="Py_USING_UNICODE"))]
 #[inline(always)]
-pub fn PyUnicode_CheckExact(op : *mut PyObject) -> bool { false }
+pub fn PyUnicode_CheckExact(op : *mut PyObject) -> c_int { 0 }
 
 

@@ -7,9 +7,9 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyFunction_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyFunction_Check(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyFunction_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 

@@ -24,14 +24,14 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyByteArray_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyByteArray_Check(op : *mut PyObject) -> c_int {
     PyObject_TypeCheck(op, &mut PyByteArray_Type)
 }
 
 #[inline(always)]
-pub unsafe fn PyByteArray_CheckExact(op : *mut PyObject) -> bool {
+pub unsafe fn PyByteArray_CheckExact(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyByteArray_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 #[link(name = "python2.7")]

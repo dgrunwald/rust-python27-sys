@@ -42,21 +42,21 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyClass_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyClass_Check(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyClass_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 #[inline(always)]
-pub unsafe fn PyInstance_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyInstance_Check(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyInstance_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 #[inline(always)]
-pub unsafe fn PyMethod_Check(op : *mut PyObject) -> bool {
+pub unsafe fn PyMethod_Check(op : *mut PyObject) -> c_int {
     let u : *mut PyTypeObject = &mut PyMethod_Type;
-    Py_TYPE(op) == u
+    (Py_TYPE(op) == u) as c_int
 }
 
 #[link(name = "python2.7")]

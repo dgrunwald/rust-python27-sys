@@ -428,8 +428,8 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyObject_TypeCheck(ob: *mut PyObject, tp: *mut PyTypeObject) -> bool {
-    Py_TYPE(ob) == tp || PyType_IsSubtype(Py_TYPE(ob), tp) != 0
+pub unsafe fn PyObject_TypeCheck(ob: *mut PyObject, tp: *mut PyTypeObject) -> c_int {
+    (Py_TYPE(ob) == tp || PyType_IsSubtype(Py_TYPE(ob), tp) != 0) as c_int
 }
 
 #[link(name = "python2.7")]
@@ -440,13 +440,13 @@ extern "C" {
 }
 
 #[inline(always)]
-pub unsafe fn PyType_Check(op: *mut PyObject) -> bool {
+pub unsafe fn PyType_Check(op: *mut PyObject) -> c_int {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_TYPE_SUBCLASS)
 }
 
 #[inline(always)]
-pub unsafe fn PyType_CheckExact(op: *mut PyObject) -> bool {
-    Py_TYPE(op) == (&mut PyType_Type as *mut PyTypeObject)
+pub unsafe fn PyType_CheckExact(op: *mut PyObject) -> c_int {
+    (Py_TYPE(op) == (&mut PyType_Type as *mut _)) as c_int
 }
 
 #[link(name = "python2.7")]
@@ -620,12 +620,12 @@ pub const Py_TPFLAGS_DEFAULT : c_long = (
                  0);
 
 #[inline(always)]
-pub unsafe fn PyType_HasFeature(t : *mut PyTypeObject, f : c_long) -> bool {
-    ((*t).tp_flags & f) != 0
+pub unsafe fn PyType_HasFeature(t : *mut PyTypeObject, f : c_long) -> c_int {
+    (((*t).tp_flags & f) != 0) as c_int
 }
 
 #[inline(always)]
-pub unsafe fn PyType_FastSubclass(t : *mut PyTypeObject, f : c_long) -> bool {
+pub unsafe fn PyType_FastSubclass(t : *mut PyTypeObject, f : c_long) -> c_int {
     PyType_HasFeature(t, f)
 }
 
