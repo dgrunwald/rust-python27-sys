@@ -1,4 +1,4 @@
-rust-python27-sys [![Build Status](https://travis-ci.org/dgrunwald/python27-sys.svg?branch=master)](https://travis-ci.org/dgrunwald/rust-python27-sys)
+rust-python27-sys [![Build Status](https://travis-ci.org/dgrunwald/rust-python27-sys.svg?branch=master)](https://travis-ci.org/dgrunwald/rust-python27-sys)
 ====================
 
 [Rust](http://www.rust-lang.org/) FFI declarations for Python 2.7.
