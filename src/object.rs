@@ -4,7 +4,7 @@ use pyport::Py_ssize_t;
 use methodobject::PyMethodDef;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,
@@ -15,7 +15,7 @@ pub struct PyObject {
 }
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyVarObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,
@@ -136,7 +136,7 @@ pub type charbufferproc =
                               (arg1: *mut PyObject, arg2: Py_ssize_t,
                                arg3: *mut *mut c_char) -> Py_ssize_t;
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct Py_buffer {
     pub buf: *mut c_void,
     pub obj: *mut PyObject,
@@ -249,6 +249,10 @@ pub struct PyNumberMethods {
     pub nb_index: Option<unaryfunc>,
 }
 
+impl Clone for PyNumberMethods {
+    #[inline] fn clone(&self) -> PyNumberMethods { *self }
+}
+
 #[repr(C)]
 #[derive(Copy)]
 pub struct PySequenceMethods {
@@ -264,12 +268,20 @@ pub struct PySequenceMethods {
     pub sq_inplace_repeat: Option<ssizeargfunc>,
 }
 
+impl Clone for PySequenceMethods {
+    #[inline] fn clone(&self) -> PySequenceMethods { *self }
+}
+
 #[repr(C)]
 #[derive(Copy)]
 pub struct PyMappingMethods {
     pub mp_length: Option<lenfunc>,
     pub mp_subscript: Option<binaryfunc>,
     pub mp_ass_subscript: Option<objobjargproc>,
+}
+
+impl Clone for PyMappingMethods {
+    #[inline] fn clone(&self) -> PyMappingMethods { *self }
 }
 
 #[repr(C)]
@@ -281,6 +293,10 @@ pub struct PyBufferProcs {
     pub bf_getcharbuffer: Option<charbufferproc>,
     pub bf_getbuffer: Option<getbufferproc>,
     pub bf_releasebuffer: Option<releasebufferproc>,
+}
+
+impl Clone for PyBufferProcs {
+    #[inline] fn clone(&self) -> PyBufferProcs { *self }
 }
 
 pub type freefunc =
@@ -401,6 +417,10 @@ pub struct PyTypeObject {
     pub tp_weaklist: *mut PyObject,
     pub tp_del: Option<destructor>,
     pub tp_version_tag: c_uint,
+}
+
+impl Clone for PyTypeObject {
+    #[inline] fn clone(&self) -> PyTypeObject { *self }
 }
 
 /* PyHeapTypeObject omitted, it doesn't seem to be part of the documented API

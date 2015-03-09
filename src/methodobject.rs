@@ -44,6 +44,10 @@ pub struct PyMethodDef {
     pub ml_doc: *const c_char,
 }
 
+impl Clone for PyMethodDef {
+    #[inline] fn clone(&self) -> PyMethodDef { *self }
+}
+
 /* Flag passed to newmethodobject */
 pub const METH_OLDARGS  : c_int = 0x0000;
 pub const METH_VARARGS  : c_int = 0x0001;
@@ -67,7 +71,7 @@ pub const METH_COEXIST   : c_int = 0x0040;
 
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyMethodChain {
     pub methods: *mut PyMethodDef,
     pub link: *mut PyMethodChain,

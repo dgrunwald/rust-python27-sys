@@ -3,7 +3,7 @@ use pyport::Py_ssize_t;
 use object::*;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct Py_complex {
     pub real: c_double,
     pub imag: c_double
@@ -21,7 +21,7 @@ extern "C" {
 }
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyComplexObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,

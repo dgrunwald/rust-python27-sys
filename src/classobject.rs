@@ -3,7 +3,7 @@ use pyport::Py_ssize_t;
 use object::*;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyClassObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,
@@ -21,7 +21,7 @@ pub struct PyClassObject {
 }
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyInstanceObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,
@@ -35,7 +35,7 @@ pub struct PyInstanceObject {
 }
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyMethodObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,

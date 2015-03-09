@@ -3,7 +3,7 @@ use pyport::Py_ssize_t;
 use object::PyObject;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyMemberDef {
     pub name: *mut c_char,
     pub type_code: c_int,

@@ -50,8 +50,12 @@ pub struct PyThreadState {
     pub trash_delete_later: *mut PyObject,
 }
 
+impl Clone for PyThreadState {
+    #[inline] fn clone(&self) -> PyThreadState { *self }
+}
+
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub enum PyGILState_STATE {
     PyGILState_LOCKED,
     PyGILState_UNLOCKED

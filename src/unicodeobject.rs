@@ -15,7 +15,7 @@ pub type Py_UNICODE = u32;
 pub type Py_UNICODE = u16;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyUnicodeObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,

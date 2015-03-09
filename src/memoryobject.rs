@@ -34,7 +34,7 @@ extern "C" {
 }
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyMemoryViewObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,

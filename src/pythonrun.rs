@@ -13,7 +13,7 @@ pub const PyCF_DONT_IMPLY_DEDENT : c_int = 0x0200;
 pub const PyCF_ONLY_AST : c_int = 0x0400;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyCompilerFlags {
     cf_flags : c_int
 }

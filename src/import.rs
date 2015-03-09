@@ -7,8 +7,13 @@ pub struct PyImport_Struct_inittab {
     pub name: *mut c_char,
     pub initfunc: Option<unsafe extern "C" fn()>,
 }
+
+impl Clone for PyImport_Struct_inittab {
+    #[inline] fn clone(&self) -> PyImport_Struct_inittab { *self }
+}
+
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct PyImport_Struct_frozen {
     pub name: *mut c_char,
     pub code: *mut c_uchar,

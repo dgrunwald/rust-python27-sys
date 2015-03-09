@@ -3,7 +3,7 @@ use pyport::Py_ssize_t;
 use object::*;
 
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 struct PyFloatObject {
     #[cfg(feature="Py_TRACE_REFS")]
     pub _ob_next: *mut PyObject,
