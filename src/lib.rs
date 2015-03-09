@@ -1,4 +1,3 @@
-#![feature(libc)]
 #![allow(raw_pointer_derive, non_camel_case_types, non_upper_case_globals, non_snake_case)]
 
 extern crate libc;
@@ -14,12 +13,17 @@ pub use intobject::*;
 pub use boolobject::*;
 pub use longobject::*;
 pub use floatobject::*;
+pub use complexobject::*;
+pub use rangeobject::*;
+pub use memoryobject::*;
+pub use bufferobject::*;
 pub use stringobject::*;
 pub use bytesobject::*;
 pub use bytearrayobject::*;
 pub use tupleobject::*;
 pub use listobject::*;
 pub use dictobject::*;
+pub use enumobject::*;
 pub use setobject::*;
 pub use pyerrors::*;
 pub use pystate::*;
@@ -51,22 +55,22 @@ mod intobject;
 mod boolobject;
 mod longobject;
 mod floatobject;
-// mod complexobject; // TODO: incomplete
-// mod rangeobject; // TODO: incomplete
+mod complexobject;
+mod rangeobject;
 mod stringobject;
-// mod memoryobject; // TODO: incomplete
-// mod bufferobject; // TODO: incomplete
+mod memoryobject;
+mod bufferobject;
 mod bytesobject;
 mod bytearrayobject;
 mod tupleobject;
 mod listobject;
 mod dictobject;
-// mod enumobject; // TODO: incomplete
+mod enumobject;
 mod setobject;
 mod methodobject;
 mod moduleobject;
 mod funcobject;
-mod classobject;// TODO: incomplete
+mod classobject;
 // mod fileobject; // TODO: incomplete
 // mod cobject; // TODO: incomplete
 // mod pycapsule; // TODO: incomplete

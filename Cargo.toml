@@ -10,7 +10,7 @@ keywords = [
 homepage = "https://github.com/dgrunwald/rust-python27-sys"
 repository = "https://github.com/dgrunwald/rust-python27-sys.git"
 license = "Python-2.0"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Daniel Grunwald <daniel@danielgrunwald.de>"]
 links = "python2.7"
 build = "build.rs"
@@ -33,4 +33,7 @@ Py_TRACE_REFS = [ "Py_REF_DEBUG" ]
 Py_REF_DEBUG = []
 COUNT_ALLOCS = []
 WITH_THREAD = []
+
+[dependencies]
+libc = "0.1.5"
 

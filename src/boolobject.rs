@@ -19,10 +19,12 @@ pub unsafe fn PyBool_Check(op : *mut PyObject) -> c_int {
     (Py_TYPE(op) == u) as c_int
 }
 
+#[inline(always)]
 pub unsafe fn Py_False() -> *mut PyObject {
     &mut _Py_ZeroStruct as *mut PyBoolObject as *mut PyObject
 }
 
+#[inline(always)]
 pub unsafe fn Py_True() -> *mut PyObject {
     &mut _Py_TrueStruct as *mut PyBoolObject as *mut PyObject
 }

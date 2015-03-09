@@ -34,6 +34,21 @@ pub struct PyInstanceObject {
     pub in_weakreflist: *mut PyObject,
 }
 
+#[repr(C)]
+#[derive(Copy)]
+pub struct PyMethodObject {
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_next: *mut PyObject,
+    #[cfg(feature="Py_TRACE_REFS")]
+    pub _ob_prev: *mut PyObject,
+    pub ob_refcnt: Py_ssize_t,
+    pub ob_type: *mut PyTypeObject,
+    pub im_func: *mut PyObject,
+    pub im_self: *mut PyObject,
+    pub im_class: *mut PyObject,
+    pub im_weakreflist: *mut PyObject,
+}
+
 #[link(name = "python2.7")]
 extern "C" {
     pub static mut PyClass_Type: PyTypeObject;
@@ -77,5 +92,20 @@ extern "C" {
     pub fn PyClass_IsSubclass(arg1: *mut PyObject, arg2: *mut PyObject)
      -> c_int;
     pub fn PyMethod_ClearFreeList() -> c_int;
+}
+
+#[inline(always)]
+pub unsafe fn PyMethod_GET_FUNCTION(meth : *mut PyObject) -> *mut PyObject {
+    (*(meth as *mut PyMethodObject)).im_func
+}
+
+#[inline(always)]
+pub unsafe fn PyMethod_GET_SELF(meth : *mut PyObject) -> *mut PyObject {
+    (*(meth as *mut PyMethodObject)).im_self
+}
+
+#[inline(always)]
+pub unsafe fn PyMethod_GET_CLASS(meth : *mut PyObject) -> *mut PyObject {
+    (*(meth as *mut PyMethodObject)).im_class
 }
 
