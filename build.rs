@@ -1,4 +1,6 @@
+extern crate pkg_config;
+
 fn main() {
-    println!("cargo:rustc-flags=-l python2.7");
+    pkg_config::find_library("python-2.7").unwrap();
 }
 

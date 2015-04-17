@@ -19,6 +19,12 @@ exclude = [
     ".travis.yml",
 ]
 
+[dependencies]
+libc = "0.1.5"
+
+[build-dependencies]
+pkg-config = "0.3"
+
 [features]
 # Features correspond to possible settings used when compiling python.
 # It's probably a misuse to use cargo features for this;
@@ -33,7 +39,4 @@ Py_TRACE_REFS = [ "Py_REF_DEBUG" ]
 Py_REF_DEBUG = []
 COUNT_ALLOCS = []
 WITH_THREAD = []
-
-[dependencies]
-libc = "0.1.5"
 
