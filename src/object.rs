@@ -61,16 +61,6 @@ pub type coercion =
     unsafe extern "C" fn
                               (arg1: *mut *mut PyObject,
                                arg2: *mut *mut PyObject) -> c_int;
-#[deprecated="deprecated in Python 2.5"]
-pub type intargfunc =
-    unsafe extern "C" fn
-                              (arg1: *mut PyObject, arg2: c_int)
-                              -> *mut PyObject;
-#[deprecated="deprecated in Python 2.5"]
-pub type intintargfunc =
-    unsafe extern "C" fn
-                              (arg1: *mut PyObject, arg2: c_int,
-                               arg3: c_int) -> *mut PyObject;
 pub type ssizeargfunc =
     unsafe extern "C" fn(arg1: *mut PyObject, arg2: Py_ssize_t)
                               -> *mut PyObject;
