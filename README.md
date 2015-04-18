@@ -8,6 +8,7 @@ rust-python27-sys [![Build Status](https://travis-ci.org/dgrunwald/rust-python27
 This [cargo -sys package](http://doc.crates.io/build-script.html#*-sys-packages) provides `python27` declarations.
 Licensed under the Python license (see `LICENSE`).
 
+For a safe high-level API, see [rust-cpython](https://github.com/dgrunwald/rust-cpython).
 
 # Usage
 
@@ -21,7 +22,7 @@ version = "*"
 In Rust, import the crate like this:
 
 ```rust
-extern crate "python27-sys" as py;
+extern crate python27_sys as py;
 ```
 
 Documentation for the python API is available on [https://docs.python.org/2/c-api/].
