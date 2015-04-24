@@ -10,7 +10,7 @@ keywords = [
 homepage = "https://github.com/dgrunwald/rust-python27-sys"
 repository = "https://github.com/dgrunwald/rust-python27-sys.git"
 license = "Python-2.0"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Daniel Grunwald <daniel@danielgrunwald.de>"]
 links = "python2.7"
 build = "build.rs"
@@ -20,7 +20,7 @@ exclude = [
 ]
 
 [dependencies]
-libc = "0.1.5"
+libc = "*"
 
 [build-dependencies]
 pkg-config = "0.3"
